@@ -2,6 +2,11 @@
 
 Echte macOS-Oberfläche mit `PyObjC` (`AppKit`), deklarativ per XML beschrieben.
 
+## Lizenz / Third-party
+
+- **Projekt-Lizenz**: MIT (siehe `LICENSE`)
+- **Phosphor Icons (Fonts)**: MIT (siehe `PHOSPHOR_ICONS_LICENSE.txt` und `THIRD_PARTY_NOTICES.md`)
+
 ## Setup
 
 ```bash
@@ -62,7 +67,8 @@ python3 main.py
       color="label|secondary|accent|red|green|blue|orange|white" />
 ```
 
-Alle Icon-Namen: [phosphoricons.com](https://phosphoricons.com)
+Alle Icon-Namen: [phosphoricons.com](https://phosphoricons.com)  
+Lizenz/Attribution: siehe `THIRD_PARTY_NOTICES.md`
 
 ```python
 # Direkter Zugriff aus Python
@@ -113,7 +119,10 @@ icons = phosphor_icons.all_icons()        # Liste aller 1530 Namen
 ## Python API
 
 ```python
-builder = XMLUIBuilder("ui.xml", logic=UILogic())
+import os
+
+ui_path = os.path.join(os.path.dirname(__file__), "ui.xml")
+builder = XMLUIBuilder(ui_path, logic=UILogic())
 window  = builder.build_window()
 
 # Rohes NSView-Objekt
@@ -156,17 +165,15 @@ builder.stop_spinner("id")
 class UILogic:
     def resolve(self, action_name, ui):
         return {
-            "my_action": lambda: self.my_action(ui),
-            "quit_app":  lambda: self.quit_app(),
+            "show_home":   lambda: self.show_home(ui),
+            "show_user":   lambda: self.show_user(ui),
+            "show_config": lambda: self.show_config(ui),
+            "show_help":   lambda: self.show_help(ui),
+            "show_close":  lambda: self.show_close(ui),
+
+            "close_cancel": lambda: self.close_cancel(ui),
+            "close_quit":   lambda: self.close_quit(ui),
         }.get(action_name, lambda: print(f"Unknown: {action_name}"))
-
-    def my_action(self, ui):
-        name = ui.get_text("name_input")
-        ui.set_text("title_label", f"Hallo, {name}!")
-
-    def quit_app(self):
-        from AppKit import NSApp
-        NSApp.terminate_(None)
 ```
 
 ---
