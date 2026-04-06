@@ -214,13 +214,16 @@ builder.show_popover("button_id", "Info-Text hier.", width=240, height=80)
 
 ## Nicht in der Liste (bewusst weggelassen)
 
-Diese Elemente sind **kein nativer macOS-Standard** und würden Custom Drawing benötigen:
+Diese Elemente sind **kein nativer macOS-Standard**. Ein Teil davon ist hier trotzdem als **Custom/Experiment** umgesetzt (siehe oben), der Rest wäre zusätzlicher Aufwand (Custom Drawing / eigenes Panel / eigenes Control):
 
 - Knob / Virtual Knob
 - Pie / Radial Menu
-- FAB (Floating Action Button)
-- Carousel / Lightbox
 - Ribbon
-- Toast / Snackbar (wäre ein eigenes floating NSPanel)
 - 2D Matrix / Wheel Picker
-- Megamenu / Breadcrumbs (nicht macOS-Paradigma)
+- Megamenu (nicht macOS-Paradigma)
+
+Bereits als Custom/Experiment vorhanden:
+- Breadcrumbs (`<breadcrumbs … />` und im Demo als Status-Label)
+- FAB (`<fab … />`)
+- Carousel (`<carousel …>…</carousel>`)
+- Toast / Snackbar (`builder.show_toast(…)`)
