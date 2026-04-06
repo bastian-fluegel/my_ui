@@ -65,6 +65,26 @@ except ImportError:
 
 warnings.filterwarnings("ignore", category=objc.ObjCPointerWarning)
 
+# Global highlight / accent color for this app (FF8000).
+_HIGHLIGHT_HEX = "D96C00"
+
+
+def _hex_to_color(hex_str: str, alpha: float = 1.0) -> NSColor:
+    s = (hex_str or "").strip().lstrip("#")
+    if len(s) == 3:
+        s = "".join([c * 2 for c in s])
+    if len(s) != 6:
+        return NSColor.controlAccentColor()
+    r = int(s[0:2], 16) / 255.0
+    g = int(s[2:4], 16) / 255.0
+    b = int(s[4:6], 16) / 255.0
+    return NSColor.colorWithSRGBRed_green_blue_alpha_(r, g, b, float(alpha))
+
+
+def highlight_color(alpha: float = 1.0) -> NSColor:
+    return _hex_to_color(_HIGHLIGHT_HEX, alpha=alpha)
+
+
 # Numeric constants — robust across PyObjC versions
 _BUTTON_TYPE_CHECKBOX      = 3   # NSSwitchButton
 _BUTTON_TYPE_RADIO         = 4   # NSRadioButton
@@ -135,7 +155,7 @@ class _FabView(NSView):
 
     def drawRect_(self, rect):
         path = NSBezierPath.bezierPathWithOvalInRect_(self.bounds())
-        NSColor.controlAccentColor().set()
+        highlight_color().set()
         path.fill()
         if self._icon:
             s = self.bounds().size
@@ -512,8 +532,8 @@ class XMLUIBuilder:
             "gray":   NSColor.grayColor(),
             "black":  NSColor.blackColor(),
             "white":  NSColor.whiteColor(),
-            "accent": NSColor.controlAccentColor(),
-        }.get(str(name).lower(), NSColor.controlAccentColor())
+            "accent": highlight_color(),
+        }.get(str(name).lower(), highlight_color())
 
     def _bind_action(self, control, node):
         action_name = node.get("action")
@@ -532,7 +552,7 @@ class XMLUIBuilder:
         "label":     lambda: NSColor.labelColor(),
         "secondary": lambda: NSColor.secondaryLabelColor(),
         "tertiary":  lambda: NSColor.tertiaryLabelColor(),
-        "accent":    lambda: NSColor.controlAccentColor(),
+        "accent":    lambda: highlight_color(),
         "red":       lambda: NSColor.redColor(),
         "green":     lambda: NSColor.greenColor(),
         "blue":      lambda: NSColor.blueColor(),
@@ -813,7 +833,7 @@ class XMLUIBuilder:
             "label":     NSColor.labelColor(),
             "secondary": NSColor.secondaryLabelColor(),
             "tertiary":  NSColor.tertiaryLabelColor(),
-            "accent":    NSColor.controlAccentColor(),
+            "accent":    highlight_color(),
             "red":       NSColor.redColor(),
             "green":     NSColor.greenColor(),
             "blue":      NSColor.blueColor(),
@@ -1044,6 +1064,16 @@ class XMLUIBuilder:
             return
         raise TypeError(f"'{view_id}' does not support visibility updates.")
 
+    def focus(self, view_id):
+        """Set keyboard focus to a control/view by id."""
+        if self.window is None:
+            return
+        v = self.get_view(view_id)
+        try:
+            self.window.makeFirstResponder_(v)
+        except Exception:
+            pass
+
     def set_icon_color(self, view_id, color_name: str):
         """Update an <icon> color at runtime (works for clickable icons)."""
         v = self.get_view(view_id)
@@ -1051,7 +1081,7 @@ class XMLUIBuilder:
             "label":     NSColor.labelColor(),
             "secondary": NSColor.secondaryLabelColor(),
             "tertiary":  NSColor.tertiaryLabelColor(),
-            "accent":    NSColor.controlAccentColor(),
+            "accent":    highlight_color(),
             "red":       NSColor.redColor(),
             "green":     NSColor.greenColor(),
             "blue":      NSColor.blueColor(),

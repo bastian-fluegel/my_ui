@@ -6,6 +6,8 @@ from AppKit import (
 from Foundation import NSObject
 from PyObjCTools import AppHelper
 
+import os
+
 import phosphor_icons
 from ui_logic import UILogic
 from xml_loader import XMLUIBuilder
@@ -14,7 +16,8 @@ from xml_loader import XMLUIBuilder
 class AppDelegate(NSObject):
     def applicationDidFinishLaunching_(self, _notification):
         logic = UILogic()
-        self.builder = XMLUIBuilder("ui.xml", logic=logic)
+        ui_path = os.path.join(os.path.dirname(__file__), "ui.xml")
+        self.builder = XMLUIBuilder(ui_path, logic=logic)
         self.window = self.builder.build_window()
         logic.show_home(self.builder)   # set initial icon highlight + breadcrumb
         self.window.makeKeyAndOrderFront_(None)
