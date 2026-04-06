@@ -1,0 +1,45 @@
+<window title="Native macOS XML Demo" width="760" height="520">
+
+    <!-- Custom Titlebar -->
+    <label id="title" left="24" right="170" top="16" height="24" text="Meine App" fontSize="18" bold="true" />
+
+    <!-- Icons rechts oben: home, user, config, close -->
+    <icon id="nav_home"   right="136" top="14" width="28" height="28" name="house"       weight="fill" color="secondary" hoverColor="label" action="show_home"   tooltip="Home" />
+    <icon id="nav_user"   right="102" top="14" width="28" height="28" name="user-circle" weight="fill" color="secondary" hoverColor="label" action="show_user"   tooltip="User" />
+    <icon id="nav_config" right="68"  top="14" width="28" height="28" name="gear"        weight="fill" color="secondary" hoverColor="label" action="show_config" tooltip="Config" />
+    <icon id="nav_close"  right="24"  top="14" width="28" height="28" name="x-circle"    weight="bold" color="secondary" hoverColor="red"   action="quit_app"   tooltip="Schließen" />
+
+    <!-- Subtitle -->
+    <label id="subtitle" left="24" right="24" top="48" height="16" text="Subtitle / kurzer Kontext" fontSize="12" color="secondary" />
+
+    <!-- Trennlinie unter Titlebar -->
+    <separator id="title_sep" left="0" right="0" top="68" height="1" />
+
+    <!-- Statusleiste unten -->
+    <separator id="status_sep" left="0" right="0" bottom="36" height="1" />
+    <label id="breadcrumbs" left="24" right="24" bottom="14" height="16" text="Meine App > Home" fontSize="11" color="secondary" />
+
+    <!-- Content views (Home / User / Config) -->
+    <container id="home_view" left="0" right="0" top="72" bottom="40">
+        <!-- Zentrierter Block: Label oben, Spinner unten, 16px Abstand -->
+        <container id="home_block" centerX="true" centerY="true" width="320" height="66">
+            <label   id="home_body"    left="0" right="0" top="0"    height="18" text="Hier kommt Home hin." fontSize="13" color="secondary" />
+            <spinner id="home_spinner" centerX="true"     bottom="0" width="32"  height="32" spinning="true" />
+        </container>
+    </container>
+
+    <container id="user_view" left="0" right="0" top="72" bottom="40" visible="false">
+        <container id="user_block" centerX="true" centerY="true" width="320" height="66">
+            <label   id="user_body"    left="0" right="0" top="0"    height="18" text="Hier kommt User hin." fontSize="13" color="secondary" />
+            <spinner id="user_spinner" centerX="true"     bottom="0" width="32"  height="32" spinning="true" />
+        </container>
+    </container>
+
+    <container id="config_view" left="0" right="0" top="72" bottom="40" visible="false">
+        <container id="config_block" centerX="true" centerY="true" width="320" height="66">
+            <label   id="config_body"    left="0" right="0" top="0"    height="18" text="Hier kommt Config hin." fontSize="13" color="secondary" />
+            <spinner id="config_spinner" centerX="true"     bottom="0" width="32"  height="32" spinning="true" />
+        </container>
+    </container>
+
+</window>
